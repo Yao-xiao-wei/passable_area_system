@@ -11,14 +11,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class PassableDataset(Dataset):
     def __init__(self, image_dir, mask_dir, img_ext="jpg"):
+        # 绝对路径
         self.image_dir = os.path.join(BASE_DIR, image_dir)
         self.mask_dir = os.path.join(BASE_DIR, mask_dir)
+
+        # 确保文件夹存在
+        if not os.path.exists(self.image_dir):
+            raise FileNotFoundError(f"Image directory not found: {self.image_dir}")
+        if not os.path.exists(self.mask_dir):
+            raise FileNotFoundError(f"Mask directory not found: {self.mask_dir}")
 
         self.images = []
 
         # 获取图片文件的路径
         pattern = os.path.join(self.image_dir, f"*.{img_ext}")
         all_images = sorted(glob.glob(pattern))
+
+        missing_masks = []  # 用来存储缺少对应 mask 的图片
 
         # 自动过滤无对应mask的图片
         for img_path in all_images:
@@ -27,9 +36,17 @@ class PassableDataset(Dataset):
 
             if os.path.exists(mask_path):
                 self.images.append(img_path)
+            else:
+                missing_masks.append(img_path)  # 记录缺少 mask 的图片
 
+        # 打印信息
         print(f"Found {len(all_images)} images")
         print(f"Valid image-mask pairs: {len(self.images)}")
+
+        if missing_masks:
+            print("Missing masks for the following images:")
+            for missing in missing_masks:
+                print(f"  - {missing}")
 
         if len(self.images) == 0:
             raise RuntimeError("No valid image-mask pairs found.")

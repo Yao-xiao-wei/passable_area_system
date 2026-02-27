@@ -6,7 +6,7 @@ from deep_learning.model.unet import UNet
 
 # -------------------- 配置 --------------------
 MODEL_PATH = r"D:\passable_area_system\deep_learning\model\unet.pth"
-TEST_IMAGE_PATH = r"D:\passable_area_system\data\raw\test127.jpg"
+TEST_IMAGE_PATH = r"D:\passable_area_system\data\raw\test189.jpg"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # -------------------- 可视化函数 --------------------
