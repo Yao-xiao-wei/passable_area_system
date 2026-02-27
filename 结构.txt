@@ -1,0 +1,20 @@
+passable_area_system- 
+	data-
+		labels- 
+		raw- 
+		masks-
+		predictions-
+	deep_learning- 
+		model- 
+			unet.py
+			unet.pth 
+		datasets.py 
+		infer.py 
+		train.py 
+	evaulation- 
+		metrics.py 
+	traditional- 
+		...... 
+	utils- 
+		........ 
+	main.py
