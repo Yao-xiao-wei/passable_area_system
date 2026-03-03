@@ -5,7 +5,7 @@ import cv2
 from deep_learning.model.unet import UNet
 
 # 配置
-MODEL_PATH = r"D:\passable_area_system\deep_learning\model\unet.pth"
+MODEL_PATH = r"D:\passable_area_system\deep_learning\model\unet_v4.pth"
 RAW_IMAGE_DIR = r"D:\passable_area_system\data\raw"
 MASK_IMAGE_DIR = r"D:\passable_area_system\data\masks"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")

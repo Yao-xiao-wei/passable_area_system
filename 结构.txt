@@ -18,3 +18,9 @@ passable_area_system-
 	utils- 
 		........ 
 	main.py
+
+
+
+
+
+v4 Epoch [40/40] Loss=1.4263 BCE=0.8026 Dice=0.6238
