@@ -23,4 +23,10 @@ passable_area_system-
 
 
 
-v4 Epoch [40/40] Loss=1.4263 BCE=0.8026 Dice=0.6238
+| 版本     | 模型   | 输入尺寸    | 数据增强   | 损失函数                       | 优化器           | 学习率调度             | 批量大小 | Epoch | 训练指标                                 |
+| ------ | ---- | ------- | ------ | -------------------------- | ------------- | ----------------- | ---- | ----- | ------------------------------------ |
+| **v1** | UNet | 256×256 | 无      | BCE                        | Adam(lr=1e-3) | 无                 | 4    | 40    | Loss≈30, Dice≈15                     |
+| **v2** | UNet | 256×256 | 无      | BCE                        | Adam(lr=1e-3) | 无                 | 4    | 40    | Loss≈15.0687                         |
+| **v3** | UNet | 256×256 | 无      | BCE                        | Adam(lr=1e-3) | 无                 | 4    | 40    | Loss≈15.0687, Dice≈15                |
+| **v4** | UNet | 256×256 | 随机水平翻转 | BCE(pos_weight=3.0) + Dice | Adam(lr=5e-4) | ReduceLROnPlateau | 4    | 40    | Loss=1.4263, BCE=0.8026, Dice=0.6238 |
+| **v5** | UNet | 256×256 | 随机水平翻转 | BCE(pos_weight=3.0) + Dice | Adam(lr=5e-4) | ReduceLROnPlateau | 4    | 40    | Loss=1.4199, BCE=0.7972, Dice=0.6227 |
