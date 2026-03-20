@@ -2,66 +2,148 @@ import os
 import cv2
 import torch
 import numpy as np
-from deep_learning.model.unet import UNet
+from torchvision import transforms
 
-class DeepLearningSegmentor:
-    def __init__(self, weight_path, device=None):
-        self.device = device if device else ("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = UNet().to(self.device)
-        if not os.path.exists(weight_path):
-            raise FileNotFoundError(f"Weight file not found: {weight_path}")
-        self.model.load_state_dict(torch.load(weight_path, map_location=self.device))
-        self.model.eval()
-        print("模型权重加载成功！")
+from model.unet import UNet
 
-    def segment(self, img_path):
-        """输入图片路径，返回原图和预测 mask (0/1, 与原图同尺寸)"""
-        img = cv2.imread(img_path)
-        if img is None:
-            raise FileNotFoundError(f"Image not found: {img_path}")
-        orig_h, orig_w = img.shape[:2]
 
-        # 预处理
-        input_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        input_img = cv2.resize(input_img, (256, 256))  # UNet 输入大小
-        input_img = input_img / 255.0  # 归一化到 [0, 1]
+# =========================
+# 路径配置
+# =========================
+MODEL_PATH = r"D:\passable_area_system\deep_learning\model\unet_best.pth"
+IMAGE_DIR = r"D:\passable_area_system\data\raw"
+SAVE_DIR = r"D:\passable_area_system\data\predictions"
 
-        input_tensor = torch.from_numpy(input_img).float().permute(2, 0, 1).unsqueeze(0).to(self.device)
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+INPUT_SIZE = 256
 
-        print("Input tensor shape:", input_tensor.shape)
-        print("Input tensor min/max:", input_tensor.min().item(), input_tensor.max().item())
 
-        # 推理
+# =========================
+# 模型加载
+# =========================
+def load_model():
+    model = UNet()
+    model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
+    model.to(DEVICE)
+    model.eval()
+    return model
+
+
+# =========================
+# 预处理
+# =========================
+def preprocess(image):
+    transform = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Resize((INPUT_SIZE, INPUT_SIZE)),
+        transforms.ToTensor(),
+    ])
+    return transform(image).unsqueeze(0).to(DEVICE)
+
+
+# =========================
+# 后处理（优化版）
+# =========================
+def postprocess(pred, original_shape):
+    pred = pred.squeeze().cpu().numpy()
+
+    # ⭐阈值优化（关键）
+    mask = (pred > 0.3).astype(np.uint8) * 255
+
+    # ⭐形态学优化（连通性）
+    kernel = np.ones((5, 5), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+
+    # 恢复尺寸
+    mask = cv2.resize(mask, (original_shape[1], original_shape[0]))
+
+    return mask
+
+
+# =========================
+# 障碍检测
+# =========================
+def detect_obstacle(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray, 50, 150)
+    obstacle = (edges > 0).astype(np.uint8) * 255
+    return obstacle
+
+
+# =========================
+# 融合（优化版）
+# =========================
+def fuse(floor, obstacle):
+    floor = floor / 255.0
+    obstacle = obstacle / 255.0
+
+    # ⭐避免一刀切
+    passable = floor * (1 - 0.5 * obstacle)
+
+    return (passable * 255).astype(np.uint8)
+
+
+# =========================
+# 可视化
+# =========================
+def visualize(image, mask):
+    color_mask = np.zeros_like(image)
+    color_mask[:, :, 1] = mask
+    return cv2.addWeighted(image, 0.7, color_mask, 0.3, 0)
+
+
+# =========================
+# 批量推理（最终版）
+# =========================
+def run_batch():
+    os.makedirs(SAVE_DIR, exist_ok=True)
+
+    model = load_model()
+
+    image_list = [f for f in os.listdir(IMAGE_DIR)
+                  if f.lower().endswith((".png", ".jpg", ".jpeg"))]
+
+    print(f"共 {len(image_list)} 张图片")
+
+    for idx, img_name in enumerate(image_list):
+        img_path = os.path.join(IMAGE_DIR, img_name)
+
+        image = cv2.imread(img_path)
+        if image is None:
+            continue
+
+        h, w = image.shape[:2]
+
+        input_tensor = preprocess(image)
+
         with torch.no_grad():
-            output = self.model(input_tensor)
-            pred = output[0, 0].cpu().numpy()  # 单通道输出
-            pred_mask = (pred > 0.5).astype(np.uint8)  # 二值化处理
+            probs = model(input_tensor)
 
-            print("Pred min/max:", pred.min(), pred.max())
+        # =========================
+        # 1️⃣ 纯模型结果
+        # =========================
+        floor_mask = postprocess(probs, (h, w))
 
-        # 缩放回原图尺寸
-        pred_mask = cv2.resize(pred_mask, (orig_w, orig_h), interpolation=cv2.INTER_NEAREST)
-        return img, pred_mask
+        # =========================
+        # 2️⃣ 融合结果
+        # =========================
+        obstacle_mask = detect_obstacle(image)
+        passable_mask = fuse(floor_mask, obstacle_mask)
 
-def visualize(img, mask, save_path=None, window_name=None, max_width=960, max_height=540):
-    """可视化预测结果，窗口可缩放，支持保存原尺寸"""
-    overlay = img.copy()
-    overlay[mask == 1] = [0, 255, 0]  # 标记可通行区域为绿色
-    combined = cv2.addWeighted(img, 0.7, overlay, 0.3, 0)
+        # =========================
+        # 保存（重点）
+        # =========================
+        cv2.imwrite(os.path.join(SAVE_DIR, "floor_" + img_name), floor_mask)
+        cv2.imwrite(os.path.join(SAVE_DIR, "passable_" + img_name), passable_mask)
 
-    # 保存原图 + mask
-    if save_path:
-        cv2.imwrite(save_path, combined)
+        # 可视化
+        result = visualize(image, passable_mask)
+        cv2.imwrite(os.path.join(SAVE_DIR, "vis_" + img_name), result)
 
-    # 显示缩放图像
-    if window_name:
-        h, w = combined.shape[:2]
-        scale_w = min(1.0, max_width / w)
-        scale_h = min(1.0, max_height / h)
-        scale = min(scale_w, scale_h)
-        display_img = cv2.resize(combined, (int(w * scale), int(h * scale)))
+        print(f"[{idx+1}/{len(image_list)}] {img_name}")
 
-        cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-        cv2.imshow(window_name, display_img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    print("✅ 推理完成")
+
+
+if __name__ == "__main__":
+    run_batch()

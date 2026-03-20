@@ -4,7 +4,7 @@ import numpy as np
 # =========================
 # 读取图像
 # =========================
-img_path = r"D:\passable_area_system\data\raw\test.jpg"
+img_path = r"D:\passable_area_system\data\raw\test001.jpg"
 image = cv2.imread(img_path)
 
 if image is None:

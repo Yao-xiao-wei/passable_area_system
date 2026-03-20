@@ -1,0 +1,183 @@
+{
+    "annotations": {
+        "combined": {
+            "image": "", 
+            "indexedImage": ""
+        }, 
+        "labeled": {
+            "cart_pallet_jack": [], 
+            "ceiling": "", 
+            "driveable_ground": "", 
+            "ego_vehicle": null, 
+            "fixed_machinery": "", 
+            "fork_truck": [
+                ""
+            ], 
+            "goods_material": "", 
+            "misc_dynamic_feature": [
+                "", 
+                "", 
+                "", 
+                "", 
+                "", 
+                "", 
+                ""
+            ], 
+            "misc_non_static_feature": [
+                "", 
+                "", 
+                "", 
+                ""
+            ], 
+            "misc_static_feature": "", 
+            "person": [], 
+            "pylon_cone": [], 
+            "rack_shelf": "", 
+            "text_region": [
+                ""
+            ], 
+            "wall_fence_pillar": ""
+        }, 
+        "unlabeled": null
+    }, 
+    "is_customer_fix": false, 
+    "labelMapping": {
+        "cart_pallet_jack": [], 
+        "ceiling": {
+            "attributes": null, 
+            "color": "#3cb44b", 
+            "index": 2, 
+            "numPixels": 68611
+        }, 
+        "driveable_ground": {
+            "attributes": null, 
+            "color": "#e6194b", 
+            "index": 1, 
+            "numPixels": 140819
+        }, 
+        "ego_vehicle": {
+            "attributes": null, 
+            "color": "#ffe119", 
+            "index": 3, 
+            "numPixels": 0
+        }, 
+        "fixed_machinery": {
+            "attributes": null, 
+            "color": "#f032e6", 
+            "index": 8, 
+            "numPixels": 1793
+        }, 
+        "fork_truck": [
+            {
+                "attributes": null, 
+                "color": "#fffac8", 
+                "index": 18, 
+                "numPixels": 8157
+            }
+        ], 
+        "goods_material": {
+            "attributes": null, 
+            "color": "#46f0f0", 
+            "index": 7, 
+            "numPixels": 5944
+        }, 
+        "misc_dynamic_feature": [
+            {
+                "attributes": null, 
+                "color": "#800000", 
+                "index": 12, 
+                "numPixels": 1280
+            }, 
+            {
+                "attributes": null, 
+                "color": "#9e1d2b", 
+                "index": 13, 
+                "numPixels": 1044
+            }, 
+            {
+                "attributes": null, 
+                "color": "#863e27", 
+                "index": 14, 
+                "numPixels": 2902
+            }, 
+            {
+                "attributes": null, 
+                "color": "#b01705", 
+                "index": 15, 
+                "numPixels": 159
+            }, 
+            {
+                "attributes": null, 
+                "color": "#800000", 
+                "index": 23, 
+                "numPixels": 396
+            }, 
+            {
+                "attributes": null, 
+                "color": "#9e1d2b", 
+                "index": 24, 
+                "numPixels": 246
+            }, 
+            {
+                "attributes": null, 
+                "color": "#863e27", 
+                "index": 25, 
+                "numPixels": 321
+            }
+        ], 
+        "misc_non_static_feature": [
+            {
+                "attributes": null, 
+                "color": "#e6beff", 
+                "index": 11, 
+                "numPixels": 2599
+            }, 
+            {
+                "attributes": null, 
+                "color": "#bf9fce", 
+                "index": 20, 
+                "numPixels": 121
+            }, 
+            {
+                "attributes": null, 
+                "color": "#e1bbd8", 
+                "index": 21, 
+                "numPixels": 120
+            }, 
+            {
+                "attributes": null, 
+                "color": "#c7bee0", 
+                "index": 22, 
+                "numPixels": 502
+            }
+        ], 
+        "misc_static_feature": {
+            "attributes": null, 
+            "color": "#f58230", 
+            "index": 5, 
+            "numPixels": 55424
+        }, 
+        "person": [], 
+        "pylon_cone": [], 
+        "rack_shelf": {
+            "attributes": null, 
+            "color": "#911eb4", 
+            "index": 6, 
+            "numPixels": 3060
+        }, 
+        "text_region": [
+            {
+                "attributes": null, 
+                "color": "#008080", 
+                "index": 16, 
+                "numPixels": 990
+            }
+        ], 
+        "wall_fence_pillar": {
+            "attributes": null, 
+            "color": "#0082c8", 
+            "index": 4, 
+            "numPixels": 112552
+        }
+    }
+}

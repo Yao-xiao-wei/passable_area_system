@@ -1,0 +1,151 @@
+{
+    "annotations": {
+        "combined": {
+            "image": "", 
+            "indexedImage": ""
+        }, 
+        "labeled": {
+            "cart_pallet_jack": [
+                "", 
+                "", 
+                ""
+            ], 
+            "ceiling": null, 
+            "driveable_ground": "", 
+            "ego_vehicle": "", 
+            "fixed_machinery": null, 
+            "fork_truck": [], 
+            "goods_material": "", 
+            "misc_dynamic_feature": [], 
+            "misc_non_static_feature": [
+                "", 
+                "", 
+                "", 
+                "", 
+                "", 
+                ""
+            ], 
+            "misc_static_feature": "", 
+            "person": [], 
+            "pylon_cone": [], 
+            "rack_shelf": null, 
+            "text_region": [], 
+            "wall_fence_pillar": ""
+        }, 
+        "unlabeled": null
+    }, 
+    "is_customer_fix": false, 
+    "labelMapping": {
+        "cart_pallet_jack": [
+            {
+                "attributes": null, 
+                "color": "#d2f53c", 
+                "index": 10, 
+                "numPixels": 8143
+            }, 
+            {
+                "attributes": null, 
+                "color": "#bde07d", 
+                "index": 13, 
+                "numPixels": 2827
+            }, 
+            {
+                "attributes": null, 
+                "color": "#99d207", 
+                "index": 18, 
+                "numPixels": 29725
+            }
+        ], 
+        "ceiling": {
+            "attributes": null, 
+            "color": "#3cb44b", 
+            "index": 2, 
+            "numPixels": 0
+        }, 
+        "driveable_ground": {
+            "attributes": null, 
+            "color": "#e6194b", 
+            "index": 1, 
+            "numPixels": 377205
+        }, 
+        "ego_vehicle": {
+            "attributes": null, 
+            "color": "#ffe119", 
+            "index": 3, 
+            "numPixels": 3755
+        }, 
+        "fixed_machinery": {
+            "attributes": null, 
+            "color": "#f032e6", 
+            "index": 8, 
+            "numPixels": 0
+        }, 
+        "fork_truck": [], 
+        "goods_material": {
+            "attributes": null, 
+            "color": "#46f0f0", 
+            "index": 7, 
+            "numPixels": 22588
+        }, 
+        "misc_dynamic_feature": [], 
+        "misc_non_static_feature": [
+            {
+                "attributes": null, 
+                "color": "#e6beff", 
+                "index": 14, 
+                "numPixels": 6289
+            }, 
+            {
+                "attributes": null, 
+                "color": "#bf9fce", 
+                "index": 17, 
+                "numPixels": 1752
+            }, 
+            {
+                "attributes": null, 
+                "color": "#bf9fce", 
+                "index": 23, 
+                "numPixels": 53898
+            }, 
+            {
+                "attributes": null, 
+                "color": "#e1bbd8", 
+                "index": 24, 
+                "numPixels": 1995
+            }, 
+            {
+                "attributes": null, 
+                "color": "#c7bee0", 
+                "index": 25, 
+                "numPixels": 6803
+            }, 
+            {
+                "attributes": null, 
+                "color": "#e6beff", 
+                "index": 26, 
+                "numPixels": 1114
+            }
+        ], 
+        "misc_static_feature": {
+            "attributes": null, 
+            "color": "#f58230", 
+            "index": 5, 
+            "numPixels": 66145
+        }, 
+        "person": [], 
+        "pylon_cone": [], 
+        "rack_shelf": {
+            "attributes": null, 
+            "color": "#911eb4", 
+            "index": 6, 
+            "numPixels": 0
+        }, 
+        "text_region": [], 
+        "wall_fence_pillar": {
+            "attributes": null, 
+            "color": "#0082c8", 
+            "index": 4, 
+            "numPixels": 339361
+        }
+    }
+}
